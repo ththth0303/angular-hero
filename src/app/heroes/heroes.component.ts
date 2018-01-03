@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HEROES } from '../mock-heroes';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-heroes',
@@ -9,15 +10,38 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
-  constructor(private heroService: HeroService) { }
+  selectedHero: Hero;
+  heroes: Hero[];
+  constructor(private heroService: HeroService, private route: ActivatedRoute) { 
+  }
+  
 
   ngOnInit() {
+    this.getHeroes();
   }
 
   onSelect(hero): void {
     this.selectedHero = hero
-    console.log(this.selectedHero);
   }
-  this.heroes =  this.HeroService.getHeroes();
-  selectedHero: Hero;
+
+  getHeroes(): void {
+    this.heroService.getHeroes().subscribe(heroes => {
+      this.heroes = heroes;
+      let id = +this.route.snapshot.paramMap.get('id');
+      if (id) {
+      this.selectedHero = this.heroes.find(hero => hero.id === id);
+      }
+    
+    });
+  }
+
+  getHero(): void {
+      const id = +this.route.snapshot.paramMap.get('id');
+      this.heroService.getHero(id)
+        .subscribe(hero => this.selectedHero = hero);
+    }
+
+  addHero(name): void {
+    this.heroService.addHero(name);
+  }
 }

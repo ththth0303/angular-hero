@@ -1,8 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <app-heroes></app-heroes>
-  <app-messages></app-messages>
+    <h1>
+        Welcome to {{title}}!
+    </h1>
+    <div>
+        <a routerLink="/dashboard">Heroes</a>
+        <a routerLink="/heroes">Heroes</a>
+    </div>
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
 </div>
