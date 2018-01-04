@@ -20,14 +20,24 @@ export class HeroDetailComponent implements OnInit {
     }
     
     @Input() hero: Hero;
+    @Input() heroName: string;
 
     getHero(): void {
         const id = +this.route.snapshot.paramMap.get('id');
         this.heroService.getHero(id)
-        .subscribe(hero => this.hero = hero);
+        .subscribe(hero => {this.hero = hero; this.hero ? this.heroName = this.hero.name : '' });
     }
 
     goBack(): void {
         this.location.back();
+    }
+
+    save(hero): void {
+
+      if (hero.name) {
+          console.log(hero);
+          this.heroService.saveHero(hero).subscribe((hero) => {
+          });
+      }
     }
 }
