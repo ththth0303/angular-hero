@@ -3,6 +3,7 @@ import { Hero } from '../hero';
 import { HeroService }  from '../hero.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-hero-detail',
@@ -12,15 +13,19 @@ import { Location } from '@angular/common';
 export class HeroDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
+        private route1: Router,
         private heroService: HeroService,
         private location: Location) { }
 
     ngOnInit() {
        this.getHero();
+       var edit: boolean = false;
     }
     
     @Input() hero: Hero;
     @Input() heroName: string;
+
+
 
     getHero(): void {
         const id = +this.route.snapshot.paramMap.get('id');
@@ -32,11 +37,20 @@ export class HeroDetailComponent implements OnInit {
         this.location.back();
     }
 
+    delete(id): void {
+         this.heroService.deleteHero(id).subscribe((data) => {
+           if (data.status === 'ok') {
+             this.route1.navigate(['/dashboard'])
+           }
+         });
+    }
+
+
     save(hero): void {
 
       if (hero.name) {
           console.log(hero);
-          this.heroService.saveHero(hero).subscribe((hero) => {
+          this.heroService.saveHero(hero).subscribe(() => this.edit = false)
           });
       }
     }

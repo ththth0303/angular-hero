@@ -3,10 +3,13 @@
   <h2>{{ hero.name | uppercase }} Details</h2>
   <div><span>id: </span>{{hero.id}}</div>
   <div>
-    <label>name:
-      <input  placeholder="name"  value="{{ hero.name }}" [(ngModel)]="heroName" />
-    </label>
+    <label>name: {{ hero.name | uppercase }}</label><br>
+      <input  placeholder="name"  value="{{ hero.name }}" [(ngModel)]="heroName" (keydown.enter) ="hero.name = heroName;save(hero)
+      " *ngIf="edit"/>
   </div>
-  <button (click)="hero.name = heroName;save(hero)">save</button>
-  <button (click)="goBack()">go back</button>
+  <button (click)="hero.name = heroName;save(hero);" *ngIf="edit">Save</button>
+  <button (click)="edit = false; heroName = hero.name" *ngIf="edit">Cancel</button><br>
+  <button (click)="edit = true" style="background-color: #d7aa3d; color: white" *ngIf="!edit">Edit</button>
+  <button (click)="delete(hero.id)" style="background-color: red; color: white">Delete</button>
+  <button (click)="goBack()">Go back</button>
 </div>

@@ -54,6 +54,15 @@ export class HeroService {
        
     }
 
+    deleteHero(heroId): void {
+        console.log(httpOptions)
+        let heroes =  this.http.delete<Hero[]>(this.Url+ 'hero/' + heroId);
+        return heroes;
+       
+    }
+
+
+
     private heroesUrl = 'http://localhost:6969/heroes';
 
     private Url = 'http://localhost:6969/'; 
