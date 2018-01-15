@@ -3,6 +3,7 @@ import { HEROES } from '../mock-heroes';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
 import { ActivatedRoute } from '@angular/router';
+import { log } from 'util';
 
 @Component({
   selector: 'app-heroes',
@@ -11,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HeroesComponent implements OnInit {
   selectedHero: Hero;
-  heroes: Hero[];
+  heroes: any[];
   constructor(private heroService: HeroService, private route: ActivatedRoute) { 
   }
   
@@ -43,7 +44,12 @@ export class HeroesComponent implements OnInit {
 
   addHero(name): void {
     if (name) {
-       this.heroService.addHero(name).subscribe((hero) => this.heroes.push(hero));
+       this.heroService.addHero(name).subscribe((hero) => {
+         this.heroes.push(hero);
+         console.log(this.heroes)
+         console.log(hero)
+       });
+       
     }
   }
 }

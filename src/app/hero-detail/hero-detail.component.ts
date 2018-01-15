@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService }  from '../hero.service';
 import { ActivatedRoute } from '@angular/router';
@@ -19,39 +19,50 @@ export class HeroDetailComponent implements OnInit {
 
     ngOnInit() {
        this.getHero();
-       var edit: boolean = false;
     }
     
     @Input() hero: Hero;
     @Input() heroName: string;
-
-
+    @Input() edit: boolean = false;
+    @ViewChild('nameInput') nameInput;
 
     getHero(): void {
         const id = +this.route.snapshot.paramMap.get('id');
         this.heroService.getHero(id)
         .subscribe(hero => {this.hero = hero; this.hero ? this.heroName = this.hero.name : '' });
-    }
+    };
 
     goBack(): void {
         this.location.back();
-    }
+    };
+
+    uploadFile(e, heroId): void {
+
+      let formData = new FormData(this.nameInput);
+      
+      this.heroService.uploadAvatar(formData).subscribe((data) => {
+          console.log(data);
+        if (data.status === 'sucess') {
+          this.hero.email = data.path;
+        } else {
+          alert('có lỗi xảy ra');
+        }
+      });
+    };
 
     delete(id): void {
-         this.heroService.deleteHero(id).subscribe((data) => {
-           if (data.status === 'ok') {
-             this.route1.navigate(['/dashboard'])
-           }
-         });
-    }
-
+      this.heroService.deleteHero(id).subscribe((data) => {
+          console.log(data);
+       if (data.status === 'ok') {
+         this.route1.navigate(['/dashboard']);
+       }
+      });
+    };
 
     save(hero): void {
-
       if (hero.name) {
           console.log(hero);
           this.heroService.saveHero(hero).subscribe(() => this.edit = false)
-          });
+          };
       }
-    }
-}
+    };

@@ -10,7 +10,7 @@ import { MessageService } from './messages.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
  
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' })
 };
 
 @Injectable()
@@ -30,7 +30,7 @@ export class HeroService {
 
     getHero(id: number): Observable<Hero> {
         this.messageService.add(`HeroService: fetched hero id=${id}`);
-        let heroes =  this.http.get<Hero[]>(this.Url + 'hero/' + id);
+        let heroes =  this.http.get<Hero>(this.Url + 'hero/' + id);
         return heroes;
     }
 
@@ -46,22 +46,29 @@ export class HeroService {
        
     }
 
-    saveHero(hero): void {
+    saveHero(hero): Observable<Hero[]> {
         console.log(hero);
         console.log(httpOptions)
-        let heroes =  this.http.put<Hero[]>(this.heroesUrl, hero, httpOptions);
+        let heroes =  this.http.put<Hero[]>(this.heroesUrl, hero);
         return heroes;
        
     }
 
-    deleteHero(heroId): void {
+    deleteHero(heroId): Observable<any> {
         console.log(httpOptions)
-        let heroes =  this.http.delete<Hero[]>(this.Url+ 'hero/' + heroId);
+        let heroes =  this.http.delete(this.Url+ 'hero/' + heroId);
         return heroes;
        
     }
 
+    uploadAvatar(data): Observable<any> {
+        console.log(httpOptions)
+        let heroes =  this.http.post(this.Url+ 'upload/image', data);
+        console.log(heroes);
 
+        return heroes;
+       
+    }
 
     private heroesUrl = 'http://localhost:6969/heroes';
 

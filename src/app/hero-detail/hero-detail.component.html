@@ -12,4 +12,13 @@
   <button (click)="edit = true" style="background-color: #d7aa3d; color: white" *ngIf="!edit">Edit</button>
   <button (click)="delete(hero.id)" style="background-color: red; color: white">Delete</button>
   <button (click)="goBack()">Go back</button>
+  <form id="uploadForm" #nameInput
+          enctype="multipart/form-data"
+          action="/api/photo"
+          method="post">
+    <input type="file" name="userPhoto" (change) = "uploadFile($event, hero.id)" accept="image/*" multiple>
+    <input type="hidden" name="userId" value="{{hero.id}}">
+     
+    </form>
+  <img src="http://localhost:6969/{{ hero.email}}">
 </div>

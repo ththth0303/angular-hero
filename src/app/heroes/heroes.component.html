@@ -4,6 +4,7 @@
     [class.selected]="hero === selectedHero"
     (click)="onSelect(hero)" routerLink="/heroes/detail/{{hero.id}}">
     <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <img src="http://localhost:6969/{{ hero.email}}" height="20px" style="margin-left: 230px">
   </li>
 </ul>
  
